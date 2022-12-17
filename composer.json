@@ -1,10 +1,14 @@
 {
-    "name": "uran1980/php-electrum-api",
+    "name": "e1real/php-electrum-api",
     "description": "PHP wrapper for Electrum JSONRPC-API",
     "type": "library",
 	"keywords": ["electrum", "bitcoin", "payment", "jsonrpc", "api"],
     "license": "GPL-3.0-or-later",
     "authors": [
+        {
+            "name": "Esbol Moldrahmetov",
+            "email": "esbolarai@gmail.com"
+        },
         {
             "name": "Pascal Krason",
             "email": "p.krason@padr.io"
@@ -15,8 +19,8 @@
         }
     ],
     "require": {
-        "php": "^7.3 || ~8.0.0 || ~8.1.0",
-        "laminas/laminas-hydrator": "~4.5.0"
+        "php": "^7.3 || ~8.0.0 || ~8.1.0 || 8.2.*",
+        "laminas/laminas-hydrator": "~4.11.*"
     },
 	"autoload": {
 		"psr-4": {
