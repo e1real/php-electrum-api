@@ -20,7 +20,7 @@
     ],
     "require": {
         "php": "^7.3 || ~8.0.0 || ~8.1.0 || 8.2.*",
-        "laminas/laminas-hydrator": "~4.11.*"
+        "laminas/laminas-hydrator": "4.6.0"
     },
 	"autoload": {
 		"psr-4": {
