@@ -1,142 +1,47 @@
 <?php
+declare(strict_types=1);
 
 namespace Electrum\Request\Method\Payment;
 
 use Electrum\Request\AbstractMethod;
+use Electrum\Request\Exception\BadRequestException;
 use Electrum\Request\MethodInterface;
-use Electrum\Response\Model\Payment\PaymentRequest as PaymentRequestResponse;
+use Electrum\Response\Exception\BadResponseException;
 use Electrum\Response\Model\Payment\PaymentRequest;
+use Electrum\Response\Model\Payment\PaymentRequest as PaymentRequestResponse;
+use Electrum\Traits\Amount;
+use Electrum\Traits\Memo;
 
-/**
- * Create a payment request.
- * @author Pascal Krason <p.krason@padr.io>
- */
 class AddRequest extends AbstractMethod implements MethodInterface
 {
+    use Amount;
+    use Memo;
 
-    /**
-     * @var string
-     */
-    private $method = 'add_request';
+    private string $method = 'add_request';
 
-    /**
-     * Bitcoin amount to request
-     * @var float
-     */
-    private $amount = 0;
-
-    /**
-     * Description of the request
-     * @var null
-     */
-    private $memo = null;
-
-    /**
-     * Time in seconds
-     * @var null
-     */
     private $expiration = null;
 
-    /**
-     * Force wallet creation, even if limit is exceeded
-     * @var bool
-     */
-    private $force = false;
+    private bool $force = false;
 
-    /**
-     * @return string
-     */
-    public function getMethod()
-    {
-        return $this->method;
-    }
 
-    /**
-     * @param string $method
-     *
-     * @return AddRequest
-     */
-    public function setMethod($method)
-    {
-        $this->method = $method;
-
-        return $this;
-    }
-
-    /**
-     * @return float
-     */
-    public function getAmount()
-    {
-        return $this->amount;
-    }
-
-    /**
-     * @param float $amount
-     *
-     * @return AddRequest
-     */
-    public function setAmount($amount)
-    {
-        $this->amount = $amount;
-
-        return $this;
-    }
-
-    /**
-     * @return null
-     */
-    public function getMemo()
-    {
-        return $this->memo;
-    }
-
-    /**
-     * @param null $memo
-     *
-     * @return AddRequest
-     */
-    public function setMemo($memo)
-    {
-        $this->memo = $memo;
-
-        return $this;
-    }
-
-    /**
-     * @return null
-     */
     public function getExpiration()
     {
         return $this->expiration;
     }
 
-    /**
-     * @param null $expiration
-     *
-     * @return AddRequest
-     */
-    public function setExpiration($expiration)
+    public function setExpiration(mixed $expiration): static
     {
         $this->expiration = $expiration;
 
         return $this;
     }
 
-    /**
-     * @return bool
-     */
-    public function isForced()
+    public function isForced(): bool
     {
         return $this->force;
     }
 
-    /**
-     * @param bool $force
-     *
-     * @return AddRequest
-     */
-    public function setForced($force)
+    public function setForced(bool $force): static
     {
         $this->force = $force;
 
@@ -144,13 +49,10 @@ class AddRequest extends AbstractMethod implements MethodInterface
     }
 
     /**
-     * @param array $optional
-     *
-     * @return PaymentRequestResponse|null
-     * @throws \Electrum\Request\Exception\BadRequestException
-     * @throws \Electrum\Response\Exception\ElectrumResponseException
+     * @throws BadRequestException
+     * @throws BadResponseException
      */
-    public function execute(array $optional = [])
+    public function execute(array $optional = []): PaymentRequestResponse|null
     {
         $params = [
             'amount' => $this->getAmount(),

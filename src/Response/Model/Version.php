@@ -4,31 +4,17 @@ namespace Electrum\Response\Model;
 
 use Electrum\Response\ResponseInterface;
 
-/**
- * @author Pascal Krason <p.krason@padr.io>
- */
 class Version implements ResponseInterface
 {
 
-    /**
-     * @var string
-     */
-    protected $version = '';
+    protected string $version = '';
 
-    /**
-     * @return string
-     */
-    public function getVersion()
+    public function getVersion(): string
     {
         return $this->version;
     }
 
-    /**
-     * @param string $version
-     *
-     * @return Version
-     */
-    public function setVersion($version)
+    public function setVersion(string $version): static
     {
         $this->version = $version;
 

@@ -3,29 +3,22 @@
 namespace Electrum\Request\Method\Wallet;
 
 use Electrum\Request\AbstractMethod;
+use Electrum\Request\Exception\BadRequestException;
 use Electrum\Request\MethodInterface;
+use Electrum\Response\Exception\BadResponseException;
 use Electrum\Response\Model\Wallet\Balance as BalanceResponse;
+use Electrum\Response\ResponseInterface;
 
-/**
- * Return the balance of your wallet
- * @author Pascal Krason <p.krason@padr.io>
- */
 class GetBalance extends AbstractMethod implements MethodInterface
 {
 
-    /**
-     * @var string
-     */
-    private $method = 'getbalance';
+    private string $method = 'getbalance';
 
     /**
-     * @param array $optional
-     *
-     * @return BalanceResponse
-     * @throws \Electrum\Request\Exception\BadRequestException
-     * @throws \Electrum\Response\Exception\ElectrumResponseException
+     * @throws BadRequestException
+     * @throws BadResponseException
      */
-    public function execute(array $optional = [])
+    public function execute(array $optional = []): ResponseInterface
     {
         $data = $this->getClient()->execute($this->method, $optional);
         return $this->hydrate(new BalanceResponse(), $data);

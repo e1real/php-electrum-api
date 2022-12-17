@@ -3,32 +3,24 @@
 namespace Electrum\Request\Method\Payment;
 
 use Electrum\Request\AbstractMethod;
+use Electrum\Request\Exception\BadRequestException;
 use Electrum\Request\MethodInterface;
+use Electrum\Response\Exception\BadResponseException;
 
-/**
- * Remove all payment requests.
- * @author Pascal Krason <p.krason@padr.io>
- */
 class ClearRequests extends AbstractMethod implements MethodInterface
 {
 
-    /**
-     * @var string
-     */
-    private $method = 'clearrequests';
+    private string $method = 'clearrequests';
 
     /**
-     * @param array $optional
-     *
-     * @return boolean  Always true because electrum does not tell us anything else.
-     * @throws \Electrum\Request\Exception\BadRequestException
-     * @throws \Electrum\Response\Exception\ElectrumResponseException
+     * @throws BadRequestException
+     * @throws BadResponseException
      */
-    public function execute(array $optional = [])
+    public function execute(array $optional = []): bool
     {
         $this->getClient()->execute($this->method, $optional);
 
-        // Electrum just returns a NULL so we will never know if we succeeded
+        // Electrum just returns a NULL, so we will never know if we succeeded
         return true;
     }
 }

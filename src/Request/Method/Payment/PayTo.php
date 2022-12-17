@@ -2,40 +2,33 @@
 
 namespace Electrum\Request\Method\Payment;
 
+use Electrum\Client;
 use Electrum\Request\AbstractMethod;
+use Electrum\Request\Exception\BadRequestException;
 use Electrum\Request\MethodInterface;
-use Electrum\Response\Exception\ElectrumResponseException;
+use Electrum\Response\Exception\BadResponseException;
+use Electrum\Traits\Amount;
 
-/**
- * Return a payment request.
- * @author Pascal Krason <p.krason@padr.io>
- */
 class PayTo extends AbstractMethod implements MethodInterface
 {
+    use Amount;
+
+    private string $method = 'payto';
+
+    private string $destination = '';
+
+    public function __construct(Client $client = null)
+    {
+        parent::__construct($client);
+
+        $this->amount = '!';
+    }
 
     /**
-     * @var string
+     * @throws BadRequestException
+     * @throws BadResponseException
      */
-    private $method = 'payto';
-
-    /**
-     * @var string
-     * '!' for  maximum available
-     */
-    private $amount = '!';
-
-    /**
-     * @var string
-     */
-    private $destination = '';
-
-    /**
-     * @param array $optional
-     * @return mixed
-     * @throws ElectrumResponseException
-     * @throws \Electrum\Request\Exception\BadRequestException
-     */
-    public function execute(array $optional = [])
+    public function execute(array $optional = []): mixed
     {
         return $this->getClient()->execute($this->method, array_merge([
             'destination' => $this->getDestination(),
@@ -43,48 +36,12 @@ class PayTo extends AbstractMethod implements MethodInterface
         ], $optional));
     }
 
-    /**
-     * Get the value of Amount
-     *
-     * @return string
-     */
-    public function getAmount()
-    {
-        return $this->amount;
-    }
-
-    /**
-     * Set the value of Amount
-     *
-     * @param string amount
-     *
-     * @return self
-     */
-    public function setAmount($amount)
-    {
-        $this->amount = $amount;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of Destination
-     *
-     * @return string
-     */
-    public function getDestination()
+    public function getDestination(): string
     {
         return $this->destination;
     }
 
-    /**
-     * Set the value of Destination
-     *
-     * @param string destination
-     *
-     * @return self
-     */
-    public function setDestination($destination)
+    public function setDestination($destination): static
     {
         $this->destination = $destination;
 

@@ -5,26 +5,20 @@ namespace Electrum\Request\Method\Wallet;
 
 
 use Electrum\Request\AbstractMethod;
+use Electrum\Request\Exception\BadRequestException;
 use Electrum\Request\MethodInterface;
+use Electrum\Response\Exception\BadResponseException;
 
-/**
- * Return all loaded wallets
- * @original_author Pascal Krason <p.krason@padr.io>
- */
 class ListWallets extends AbstractMethod implements MethodInterface
 {
 
-    /**
-     * @var string
-     */
-    private $method = 'list_wallets';
+    private string $method = 'list_wallets';
 
     /**
-     * @return object
-     * @throws \Electrum\Request\Exception\BadRequestException
-     * @throws \Electrum\Response\Exception\ElectrumResponseException
+     * @throws BadRequestException
+     * @throws BadResponseException
      */
-    public function execute()
+    public function execute(): mixed
     {
         return $this->getClient()->execute($this->method);
     }

@@ -2,84 +2,47 @@
 
 namespace Electrum\Response\Model\Payment;
 
-/**
- * @author Pascal Krason <p.krason@padr.io>
- */
 class Amount
 {
-    /**
-     * @var float
-     */
-    private $bitcoins = 0;
+    private float $bitcoins = 0;
 
-    /**
-     * @var float
-     */
-    private $litecoins = 0;
+    private float $litecoins = 0;
 
-    /**
-     * @var int
-     */
-    private $satoshis = 0;
+    private int|float $satoshis = 0;
 
-    /**
-     * @return float
-     */
-    public function getBitcoins()
+    public function getBitcoins(): float
     {
         return $this->bitcoins;
     }
 
-    /**
-     * @param float $bitcoins
-     *
-     * @return Amount
-     */
-    public function setBitcoins($bitcoins)
+    public function setBitcoins(float $bitcoins): static
     {
         $this->bitcoins = $bitcoins;
 
         return $this;
     }
 
-    /**
-     * @return float
-     */
-    public function getLitecoins()
+    public function getLitecoins(): float
     {
         return $this->litecoins;
     }
 
-    /**
-     * @param float $litecoins
-     *
-     * @return Amount
-     */
-    public function setLitecoins($litecoins)
+    public function setLitecoins(float $litecoins): static
     {
         $this->litecoins = $litecoins;
 
         return $this;
     }
 
-    /**
-     * @return int
-     */
-    public function getSatoshis()
+    public function getSatoshis(): int|float
     {
         return $this->satoshis;
     }
 
-    /**
-     * @param int $satoshis
-     *
-     * @return Amount
-     */
-    public function setSatoshis($satoshis)
+    public function setSatoshis(int|float $satoshis): static
     {
         $this->satoshis = $satoshis;
 
         return $this;
     }
-
 }
