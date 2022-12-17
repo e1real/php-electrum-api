@@ -2,22 +2,11 @@
 
 namespace Electrum\Response\Exception;
 
-use Electrum\Request\Exception\BadRequestException;
 use Exception;
 
-/**
- * @author Pascal Krason <p.krason@padr.io>
- */
 class BadResponseException extends Exception
 {
-    /**
-     * Extract electrum error from response
-     *
-     * @param array $response
-     *
-     * @return BadRequestException
-     */
-    public static function createFromElectrumResponse(array $response)
+    public static function createFromElectrumResponse(array $response): self
     {
         $message = '';
         $code = 0;

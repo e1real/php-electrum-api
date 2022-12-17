@@ -5,9 +5,6 @@ namespace Electrum\Response\Model\Payment;
 use Electrum\Response\ResponseInterface;
 use Electrum\Response\Hydrator\Payment\PaymentRequest as PaymentRequestHydrator;
 
-/**
- * @author Pascal Krason <p.krason@padr.io>
- */
 class PaymentRequest implements ResponseInterface
 {
     const STATUS_UNPAID = 'Pending';
@@ -21,240 +18,135 @@ class PaymentRequest implements ResponseInterface
 
     const STATUS_PAID = 'Paid';
 
-    /**
-     * @var string
-     */
-    private $id = '';
+    private string $id = '';
 
-    /**
-     * @var string
-     */
-    private $status = '';
+    private string $status = '';
 
-    /**
-     * @var Amount|null
-     */
-    private $amount = null;
+    private Amount|null $amount = null;
 
-    /**
-     * @var string
-     */
-    private $memo = '';
+    private string $memo = '';
 
-    /**
-     * @var string
-     */
-    private $address = '';
+    private string $address = '';
 
-    /**
-     * @var string
-     */
-    private $uri = '';
+    private string $uri = '';
 
-    /**
-     * @var int
-     */
-    private $expires = 0;
+    private int $expires = 0;
 
-    /**
-     * @var int
-     */
-    private $time = 0;
+    private int $time = 0;
 
-    /**
-     * @var int
-     */
-    private $confirmations = null;
+    private int|null $confirmations = null;
 
-    /**
-     * Factory method
-     *
-     * @param array $data
-     *
-     * @return PaymentRequest
-     */
-    public static function createFromArray(array $data)
+    public static function createFromArray(array $data): PaymentRequest
     {
-        /** @var PaymentRequest $paymentRequest */
-        $paymentRequestResponse = null;
-
         $amountHydrator = new \Electrum\Response\Hydrator\Payment\Amount();
         $amount = $amountHydrator->hydrate($data, new Amount());
 
         $paymentRequestHydrator = new PaymentRequestHydrator();
-        $paymentRequestResponse = $paymentRequestHydrator->hydrate(
+
+        return $paymentRequestHydrator->hydrate(
             array_merge(
                 $data, [
                 'amount' => $amount
             ]),
             new self
         );
-
-        return $paymentRequestResponse;
     }
 
-    /**
-     * @return string
-     */
-    public function getId()
+    public function getId(): string
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
-    public function getStatus()
+    public function getStatus(): string
     {
         return $this->status;
     }
 
-    /**
-     * @param string $status
-     *
-     * @return PaymentRequest
-     */
-    public function setStatus($status)
+    public function setStatus(string $status): self
     {
         $this->status = $status;
 
         return $this;
     }
 
-    /**
-     * @return Amount|null
-     */
-    public function getAmount()
+    public function getAmount(): Amount|null
     {
         return $this->amount;
     }
 
-    /**
-     * @param Amount|null $amount
-     *
-     * @return PaymentRequest
-     */
-    public function setAmount($amount)
+    public function setAmount(Amount|null $amount): static
     {
         $this->amount = $amount;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getMemo()
+    public function getMemo(): string
     {
         return $this->memo;
     }
 
-    /**
-     * @param string $memo
-     *
-     * @return PaymentRequest
-     */
-    public function setMemo($memo)
+    public function setMemo(string $memo): static
     {
         $this->memo = $memo;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getAddress()
+    public function getAddress(): string
     {
         return $this->address;
     }
 
-    /**
-     * @param string $address
-     *
-     * @return PaymentRequest
-     */
-    public function setAddress($address)
+    public function setAddress(string $address): static
     {
         $this->address = $address;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getUri()
+    public function getUri(): string
     {
         return $this->uri;
     }
 
-    /**
-     * @param string $uri
-     *
-     * @return PaymentRequest
-     */
-    public function setUri($uri)
+    public function setUri(string $uri): static
     {
         $this->uri = $uri;
 
         return $this;
     }
 
-    /**
-     * @return int
-     */
-    public function getExpires()
+    public function getExpires(): int
     {
         return $this->expires;
     }
 
-    /**
-     * @param int $expires
-     *
-     * @return PaymentRequest
-     */
-    public function setExpires($expires)
+    public function setExpires(int $expires): static
     {
         $this->expires = $expires;
 
         return $this;
     }
 
-    /**
-     * @return int
-     */
-    public function getTime()
+    public function getTime(): int
     {
         return $this->time;
     }
 
-    /**
-     * @param int $time
-     *
-     * @return PaymentRequest
-     */
-    public function setTime($time)
+    public function setTime(int $time): static
     {
         $this->time = $time;
 
         return $this;
     }
 
-    /**
-     * @return int
-     */
-    public function getConfirmations()
+    public function getConfirmations(): int
     {
         return $this->confirmations;
     }
 
-    /**
-     * @param int $confirmations
-     *
-     * @return PaymentRequest
-     */
-    public function setConfirmations($confirmations)
+    public function setConfirmations(int|null $confirmations): static
     {
         $this->confirmations = $confirmations;
 

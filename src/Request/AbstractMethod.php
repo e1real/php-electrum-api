@@ -6,30 +6,15 @@ use Electrum\Client;
 use Electrum\Response\ResponseInterface;
 use Laminas\Hydrator\ReflectionHydrator;
 
-/**
- * @author Pascal Krason <p.krason@padr.io>
- */
 abstract class AbstractMethod
 {
 
-    /**
-     * @var string
-     */
-    private $method = '';
+    private string $method = '';
 
-    /**
-     * @var array
-     */
-    private $params = [];
+    private array $params = [];
 
-    /**
-     * @var Client
-     */
-    private $client = null;
+    private Client|null $client = null;
 
-    /**
-     * @param Client|null $client
-     */
     public function __construct(Client $client = null)
     {
         if($client instanceof Client) {
@@ -39,16 +24,7 @@ abstract class AbstractMethod
         }
     }
 
-    /**
-     * Hydrate returned api data into our custom response models
-     *
-     * @param ResponseInterface       $object
-     * @param array                   $data
-     * @param ReflectionHydrator|null $hydrator
-     *
-     * @return ResponseInterface
-     */
-    public function hydrate(ResponseInterface $object, array $data, $hydrator = null)
+    public function hydrate(ResponseInterface $object, array $data, ReflectionHydrator|null $hydrator = null): ResponseInterface
     {
         if(!$hydrator instanceof ReflectionHydrator) {
             $hydrator = new ReflectionHydrator();
@@ -60,52 +36,32 @@ abstract class AbstractMethod
         );
     }
 
-    /**
-     * @return string
-     */
-    public function getMethod()
+    public function getMethod(): string
     {
         return $this->method;
     }
 
-    /**
-     * @param string $method
-     */
-    public function setMethod($method)
+    public function setMethod(string $method): void
     {
         $this->method = $method;
     }
 
-    /**
-     * @return array
-     */
-    public function getParams()
+    public function getParams(): array
     {
         return $this->params;
     }
 
-    /**
-     * @param array $params
-     */
-    public function setParams($params)
+    public function setParams(array $params): void
     {
         $this->params = $params;
     }
 
-    /**
-     * @return Client
-     */
-    public function getClient()
+    public function getClient(): Client
     {
         return $this->client;
     }
 
-    /**
-     * @param Client $client
-     *
-     * @return AbstractMethod
-     */
-    public function setClient($client)
+    public function setClient(Client $client): static
     {
         $this->client = $client;
 

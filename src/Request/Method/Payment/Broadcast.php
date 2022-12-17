@@ -3,34 +3,23 @@
 namespace Electrum\Request\Method\Payment;
 
 use Electrum\Request\AbstractMethod;
+use Electrum\Request\Exception\BadRequestException;
 use Electrum\Request\MethodInterface;
+use Electrum\Response\Exception\BadResponseException;
 use Electrum\Response\Model\Payment\PaymentRequest;
 
-/**
- * Return a payment request.
- * @author Pascal Krason <p.krason@padr.io>
- */
 class Broadcast extends AbstractMethod implements MethodInterface
 {
 
-    /**
-     * @var string
-     */
-    private $method = 'broadcast';
+    private string $method = 'broadcast';
+
+    private string $transaction = '';
 
     /**
-     * @var string
-     * Serialized transaction (hexadecimal)
+     * @throws BadRequestException
+     * @throws BadResponseException
      */
-    private $transaction = '';
-
-    /**
-     * @param array $optional
-     * @return mixed
-     * @throws \Electrum\Request\Exception\BadRequestException
-     * @throws \Electrum\Response\Exception\ElectrumResponseException
-     */
-    public function execute(array $optional = [])
+    public function execute(array $optional = []): mixed
     {
         $data = $this->getClient()->execute($this->method, array_merge([
             'tx' => $this->getTransaction()
@@ -39,24 +28,12 @@ class Broadcast extends AbstractMethod implements MethodInterface
         return is_array($data) && isset($data[1]) ? $data[1] : $data;
     }
 
-    /**
-     * Get the value of Transaction
-     *
-     * @return string
-     */
-    public function getTransaction()
+    public function getTransaction(): string
     {
         return $this->transaction;
     }
 
-    /**
-     * Set the value of Transaction
-     *
-     * @param string transaction
-     *
-     * @return self
-     */
-    public function setTransaction($transaction)
+    public function setTransaction(string $transaction): static
     {
         $this->transaction = $transaction;
 

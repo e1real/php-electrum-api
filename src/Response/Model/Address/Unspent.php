@@ -4,31 +4,17 @@ namespace Electrum\Response\Model\Address;
 
 use Electrum\Response\ResponseInterface;
 
-/**
- * @author Pascal Krason <p.krason@padr.io>
- */
 class Unspent implements ResponseInterface
 {
 
-    /**
-     * @var array
-     */
-    private $utx = [];
+    private array $utx = [];
 
-    /**
-     * @return array
-     */
-    public function getUtx()
+    public function getUtx(): array
     {
         return $this->utx;
     }
 
-    /**
-     * @param array $utx
-     *
-     * @return Unspent
-     */
-    public function setUtx($utx)
+    public function setUtx(array $utx): static
     {
         $this->utx = $utx;
 

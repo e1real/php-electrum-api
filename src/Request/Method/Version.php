@@ -3,27 +3,22 @@
 namespace Electrum\Request\Method;
 
 use Electrum\Request\AbstractMethod;
+use Electrum\Request\Exception\BadRequestException;
 use Electrum\Request\MethodInterface;
+use Electrum\Response\Exception\BadResponseException;
 use Electrum\Response\Model\Version as VersionResponse;
 
-/**
- * @author Pascal Krason <p.krason@padr.io>
- */
 class Version extends AbstractMethod implements MethodInterface
 {
 
-    /**
-     * @var string
-     */
-    private $method = 'version';
+    private string $method = 'version';
+
 
     /**
-     * @return VersionResponse
-     *
-     * @throws \Electrum\Request\Exception\BadRequestException
-     * @throws \Electrum\Response\Exception\ElectrumResponseException
+     * @throws BadRequestException
+     * @throws BadResponseException
      */
-    public function execute(array $optional = [])
+    public function execute(array $optional = []): mixed
     {
         $data = $this->getClient()->execute($this->method, $optional);
         if(is_string($data)) {

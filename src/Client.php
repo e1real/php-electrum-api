@@ -3,56 +3,24 @@
 namespace Electrum;
 
 use Electrum\Request\Exception\BadRequestException;
-use Electrum\Response\Exception\ElectrumResponseException;
+use Electrum\Response\Exception\BadResponseException;
 
-/**
- * @author Pascal Krason <p.krason@padar.io>
- */
 class Client
 {
-    /**
-     * JSONRPC Host
-     * @var string
-     */
-    private $host = '';
+    private string $host = '';
 
-    /**
-     * JSONRPC Port
-     * @var int
-     */
-    private $port = 0;
+    private int $port = 0;
+    private string|null $rpcUsername = null;
+    private string|null $rpcPassword = null;
 
-    /**
-     * JSONRPC User Name
-     * @var string
-     */
-    private $rpcUsername = null;
+    private int $id = 0;
 
-    /**
-     * JSONRPC Password
-     * @var string
-     */
-    private $rpcPassword = null;
-
-    /**
-     * Last Message-ID
-     * @var int
-     */
-    private $id = 0;
-
-    /**
-     * @param string $host
-     * @param int    $port
-     * @param int    $id
-     * @param null   $rpcUsername
-     * @param null   $rpcPassword
-     */
     public function __construct(
-        $host = 'http://127.0.0.1',
-        $port = 7777,
-        $id = 0,
-        $rpcUsername = null,
-        $rpcPassword = null
+        string $host = 'http://127.0.0.1',
+        int $port = 7777,
+        int $id = 0,
+        string|null $rpcUsername = null,
+        string|null $rpcPassword = null
     ) {
         $this->setHost($host);
         $this->setPort($port);
@@ -62,14 +30,8 @@ class Client
     }
 
     /**
-     * Execute JSONRPC Request
-     *
-     * @param       $method
-     * @param array $params
-     *
-     * @return mixed
      * @throws BadRequestException
-     * @throws ElectrumResponseException
+     * @throws BadResponseException
      */
     public function execute($method, $params = [])
     {
@@ -81,43 +43,24 @@ class Client
 
         // Check if an error occured
         if(isset($response['error'])) {
-
-            // ### Set message
-            throw ElectrumResponseException::createFromElectrumResponse($response);
+            throw new BadResponseException($response);
         }
 
         return $response['result'];
     }
 
-    /**
-     * Create request payload
-     *
-     * @param       $method
-     * @param array $params
-     *
-     * @return mixed
-     */
-    private function createRequest($method, array $params)
+    private function createRequest(mixed $method, array $params): string
     {
-        // Build request string
         $request = json_encode([
             'method' => $method,
             'params' => $params,
             'id'     => $this->getNextId(),
         ]);
 
-        // Replace braces
         return str_replace(['[{', '}]'], ['{', '}'], $request);
     }
 
-    /**
-     * Create curl instance & execute the request
-     * @param $request
-     *
-     * @return mixed
-     * @throws BadRequestException
-     */
-    private function executeCurlRequest($request)
+    private function executeCurlRequest($request): mixed
     {
         // Create CURL instance
         $curl = curl_init(vsprintf(
@@ -155,108 +98,65 @@ class Client
         return json_decode($response, true);
     }
 
-    /**
-     * @return string
-     */
-    public function getHost()
+    public function getHost(): string
     {
         return $this->host;
     }
 
-    /**
-     * @param string $host
-     *
-     * @return Client
-     */
-    public function setHost($host)
+    public function setHost(string $host): static
     {
         $this->host = $host;
 
         return $this;
     }
 
-    /**
-     * @return int
-     */
-    public function getPort()
+    public function getPort(): int
     {
         return $this->port;
     }
 
-    /**
-     * @param int $port
-     *
-     * @return Client
-     */
-    public function setPort($port)
+    public function setPort(int $port): static
     {
         $this->port = $port;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getRpcUsername()
+    public function getRpcUsername(): string
     {
         return $this->rpcUsername;
     }
 
-    /**
-     * @param string $rpcUsername
-     *
-     * @return Client
-     */
-    public function setRpcUsername($rpcUsername)
+    public function setRpcUsername(string $rpcUsername): static
     {
         $this->rpcUsername = $rpcUsername;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getRpcPassword()
+    public function getRpcPassword(): string
     {
         return $this->rpcPassword;
     }
 
-    /**
-     * @param string $rpcPassword
-     *
-     * @return Client
-     */
-    public function setRpcPassword($rpcPassword)
+    public function setRpcPassword(string $rpcPassword): static
     {
         $this->rpcPassword = $rpcPassword;
 
         return $this;
     }
 
-    /**
-     * @return int
-     */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return int
-     */
-    public function getNextId()
+    public function getNextId(): int
     {
         return $this->id++;
     }
 
-    /**
-     * @param int $id
-     *
-     * @return Client
-     */
-    public function setId($id)
+    public function setId($id): static
     {
         $this->id = $id;
 

@@ -12,7 +12,7 @@ class Transaction implements ResponseInterface
     /**
      * @var array
      */
-    private $input_addresses;
+    private array $input_addresses;
 
     /**
      * @var array

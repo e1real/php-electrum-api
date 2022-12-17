@@ -3,27 +3,20 @@
 namespace Electrum\Request\Method\Wallet;
 
 use Electrum\Request\AbstractMethod;
+use Electrum\Request\Exception\BadRequestException;
 use Electrum\Request\MethodInterface;
+use Electrum\Response\Exception\BadResponseException;
 
-/**
- * Return newly created wallet
- * @original_author Pascal Krason <p.krason@padr.io>
- */
 class CreateWallet extends AbstractMethod implements MethodInterface
 {
 
-    /**
-     * @var string
-     */
-    private $method = 'create';
+    private string $method = 'create';
 
     /**
-     * @param array $attributes
-     * @return object
-     * @throws \Electrum\Request\Exception\BadRequestException
-     * @throws \Electrum\Response\Exception\ElectrumResponseException
+     * @throws BadRequestException
+     * @throws BadResponseException
      */
-    public function execute(array $attributes = [])
+    public function execute(array $attributes = []): mixed
     {
         return $this->getClient()->execute($this->method, $attributes);
     }
